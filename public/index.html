@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chatt app</title>
+</head>
+<body>
+    <h1>Subhajit's wow Messaging App</h1>
+    <input type="text" id="message" placeholder="enter message"/>
+    <button id="sendbtn">send</button>
+
+    <div id="messages"></div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket=io();
+        const sendBtn=document.getElementById('sendbtn');
+        const messageInput=document.getElementById('message');
+        const allmsg=document.getElementById("messages");
+
+
+        socket.on("message",(data)=>{
+            console.log(data);
+            const p=document.createElement('p');
+            p.innerText=`${data.userName}:${data.message}`;
+            allmsg.appendChild(p);
+        })
+        sendBtn.addEventListener('click',(e)=>{
+            const message=messageInput.value;
+            console.log(message);
+            socket.emit('user-message',message)
+        })
+    </script>
+</body>
+</html>
